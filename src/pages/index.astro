@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
 
 
-const res = await fetch(`http://${import.meta.env.WORDPRESS_API_URL}/wp-json/wp/v2/posts`);
+const res = await fetch(`${import.meta.env.WORDPRESS_API_URL}/wp-json/wp/v2/posts`);
 const posts = await res.json();
 ---
 
