@@ -1,0 +1,27 @@
+---
+const res = await fetch(
+	`${import.meta.env.WORDPRESS_API_URL}/wp-json/wp/v2/posts?slug=navbar`,
+);
+const posts = await res.json();
+const navArray: string = posts[0].content.rendered;
+const nav = navArray
+	.split("\n")
+	.filter((s: string) => {
+		return s.includes("<li>");
+	})
+	.map((s: string) => {
+		return s.substring(s.indexOf(">") + 1, s.lastIndexOf("<"));
+	});
+---
+
+<div>
+	{
+		nav.map((tags) => (
+			<a
+				href={`/${tags.toLowerCase() == "home" ? "" : tags.toLowerCase()}`}
+			>
+				{tags}
+			</a>
+		))
+	}
+</div>

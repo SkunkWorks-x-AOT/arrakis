@@ -1,24 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Button from "../components/Button.astro";
-
-const res = await fetch(
-	`${import.meta.env.WORDPRESS_API_URL}/wp-json/wp/v2/posts?slug=navbar`,
-);
-const posts = await res.json();
-const navArray: string = posts[0].content.rendered;
-const nav = navArray
-	.split("\n")
-	.filter((s: string) => {
-		return s.includes("<li>");
-	})
-	.map((s: string) => {
-		return s.substring(s.indexOf(">") + 1, s.lastIndexOf("<"));
-	});
 ---
 
 <Layout title="Lemon No work only meowmeow">
 	<div class="grid place-items-center h-screen content-center">
-		{nav.map((tags) => <h1>{tags}</h1>)}
+		<h1>Index Page</h1>
 	</div>
 </Layout>
