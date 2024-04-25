@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro'
+
+type Page = {
+	slug: string
+	title: string
+	content: string 
+}
+
+
+console.log()
+
+export async function getStaticPaths() {
+
+const res = await fetch(`${import.meta.env.WORDPRESS_API_URL}/graphql`, {
+	method: 'POST',
+	headers: {'Content-Type': 'application/json'},
+	body: JSON.stringify({
+		query: `{
+pages {
+    nodes {
+      slug
+      title
+      content
+    }
+  }
+}`	
+	})
+})
+
+	const data = await res.json()
+	const pages: [Page] = data.data.pages.nodes;
+	
+
+	return pages.map(({ slug, title, content }) => {
+		slug = slug === "home" ? "/" : slug
+		return {
+			params: { slug },
+			props: { title, content },
+		};
+	});
+}
+
+const { title, content } = Astro.props;
+---
+
+<Layout title={title}>
+	<div class="grid place-items-center h-screen content-center">
+		<div set:html={content}/>
+	</div>
+</Layout>
+
