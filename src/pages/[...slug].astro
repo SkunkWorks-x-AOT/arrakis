@@ -1,6 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro'
 
+type Page = {
+	slug: string
+	title: string
+	content: string 
+}
+
 
 console.log()
 
@@ -23,7 +29,7 @@ pages {
 })
 
 	const data = await res.json()
-	const pages = data.data.pages.nodes;
+	const pages: [Page] = data.data.pages.nodes;
 	
 
 	return pages.map(({ slug, title, content }) => {
