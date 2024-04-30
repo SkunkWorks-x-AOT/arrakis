@@ -1,14 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro'
+import {parseWPContent} from '../parser.tsx'
 
 type Page = {
 	slug: string
 	title: string
 	content: string 
 }
-
-
-console.log()
 
 export async function getStaticPaths() {
 
@@ -17,14 +15,14 @@ const res = await fetch(`${import.meta.env.WORDPRESS_API_URL}/graphql`, {
 	headers: {'Content-Type': 'application/json'},
 	body: JSON.stringify({
 		query: `{
-pages {
-    nodes {
-      slug
-      title
-      content
-    }
-  }
-}`	
+			pages {
+				nodes {
+					slug
+					title
+					content
+				      }
+				}
+			}`	
 	})
 })
 
@@ -33,20 +31,21 @@ pages {
 	
 
 	return pages.map(({ slug, title, content }) => {
-		slug = slug === "home" ? "/" : slug
+		slug = slug === "home" ? "/" : slug	
+		const parsedContent = parseWPContent(content)
+		console.log(typeof(parsedContent))
 		return {
 			params: { slug },
-			props: { title, content },
+			props: { title, parsedContent },
 		};
 	});
 }
 
-const { title, content } = Astro.props;
+const { title, parsedContent } = Astro.props;
 ---
 
 <Layout title={title}>
-	<div class="grid place-items-center h-screen content-center">
-		<div set:html={content}/>
-	</div>
+		<div set:html={parsedContent} />
 </Layout>
+
 
