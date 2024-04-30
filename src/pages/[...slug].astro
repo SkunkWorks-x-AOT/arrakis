@@ -45,9 +45,7 @@ const { title, parsedContent } = Astro.props;
 ---
 
 <Layout title={title}>
-	<div class="grid place-items-center h-screen content-center">
 		<div set:html={parsedContent} />
-	</div>
 </Layout>
 
 
